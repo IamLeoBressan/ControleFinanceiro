@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ControleFinanceiro.DAL.Interfaces;
+using ControleFinanceiro.Logging;
 using ControleFinanceiro.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,8 +14,10 @@ namespace ControleFinanceiro.WebAPI.Controllers
     public class CiclosController : ControllerBase
     {
         private readonly ICiclosDAL ciclosDAL;
-        public CiclosController(ICiclosDAL ciclosDAL)
+        private readonly IGravadorLog gravadorLog;
+        public CiclosController(ICiclosDAL ciclosDAL, IGravadorLog gravadorLog)
         {
+            this.gravadorLog = gravadorLog;
             this.ciclosDAL = ciclosDAL;
         }
 
@@ -29,7 +32,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                //Gravar Log erro
+                gravadorLog.GravarLogErro(ex);
                 return StatusCode(500);
             }
         }
@@ -44,7 +47,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                //Gravar Log erro
+                gravadorLog.GravarLogErro(ex);
                 return StatusCode(500);
             }
         }
@@ -59,11 +62,10 @@ namespace ControleFinanceiro.WebAPI.Controllers
                     return Created(result, ciclo);
 
                 return Ok(ciclo);
-
             }
             catch (Exception ex)
             {
-                //Gravar log
+                gravadorLog.GravarLogErro(ex);
                 return StatusCode(500);
             }
         }
@@ -78,7 +80,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                //Gravar log
+                gravadorLog.GravarLogErro(ex);
                 return StatusCode(500);
             }
         }
@@ -93,7 +95,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                //Gravar log
+                gravadorLog.GravarLogErro(ex);
                 return StatusCode(500);
             }
         }

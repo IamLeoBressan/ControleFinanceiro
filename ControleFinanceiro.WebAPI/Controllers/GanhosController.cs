@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ControleFinanceiro.DAL;
 using ControleFinanceiro.DAL.Interfaces;
+using ControleFinanceiro.Logging;
 using ControleFinanceiro.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,9 +15,11 @@ namespace ControleFinanceiro.WebAPI.Controllers
     public class GanhosController : ControllerBase
     {
         private readonly IGanhosDAL ganhosDAL;
-        public GanhosController(IGanhosDAL ganhosDAL)
+        private readonly IGravadorLog gravadorLog;
+        public GanhosController(IGanhosDAL ganhosDAL, IGravadorLog gravadorLog)
         {
             this.ganhosDAL = ganhosDAL;
+            this.gravadorLog = gravadorLog;
         }
 
         [HttpGet]
@@ -30,7 +33,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                //Gravar Log erro
+                gravadorLog.GravarLogErro(ex);
                 return StatusCode(500);
             }
         }
@@ -45,7 +48,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                //Gravar Log erro
+                gravadorLog.GravarLogErro(ex);
                 return StatusCode(500);
             }
         }
@@ -64,7 +67,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                //Gravar log
+                gravadorLog.GravarLogErro(ex);
                 return StatusCode(500);
             }
         }
@@ -79,7 +82,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                //Gravar log
+                gravadorLog.GravarLogErro(ex);
                 return StatusCode(500);
             }
         }
@@ -94,7 +97,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                //Gravar log
+                gravadorLog.GravarLogErro(ex);
                 return StatusCode(500);
             }
         }

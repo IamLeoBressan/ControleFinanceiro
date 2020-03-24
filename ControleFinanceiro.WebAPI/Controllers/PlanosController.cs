@@ -1,6 +1,8 @@
 ﻿using ControleFinanceiro.DAL.Interfaces;
 using ControleFinanceiro.Logging;
 using ControleFinanceiro.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PlanosController : ControllerBase
     {
         private readonly IPlanosDAL planosDAL;
@@ -25,8 +28,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
         {
             try
             {
-                IList<Plano> planos = await planosDAL.GetALL();
-                throw new Exception("Ocorreu um erro desconhecido!");
+                IList<Plano> planos = await planosDAL.GetALL();                
                 return Ok(planos);
             }
             catch (Exception ex)
