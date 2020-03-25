@@ -5,12 +5,15 @@ using System.Threading.Tasks;
 using ControleFinanceiro.DAL.Interfaces;
 using ControleFinanceiro.Logging;
 using ControleFinanceiro.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ControleFinanceiro.WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class GastosController : ControllerBase
     {
         private readonly IGastosDAL gastosDAL;

@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using ControleFinanceiro.Seguranca;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : ControllerBase
     {
         private readonly UserManager<Usuario> userManager;
@@ -29,7 +31,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             this.configuration = configuration;
         }
 
-        [HttpPost]
+        [HttpPost]        
         public async Task<IActionResult> CriarUsuario(RegisterModel model)
         {
             var user = new Usuario
@@ -47,6 +49,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
         }
 
         [HttpPost("Login")]
+        [AllowAnonymous]
         public async Task<ActionResult<UserToken>> Login(LoginModel model)
         {
             var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password,

@@ -44,6 +44,8 @@ namespace ControleFinanceiro.WebAPI
             services.AddDbContext<UsersContexto>(options => options.UseSqlServer(connectionStringSeg));
             services.AddDbContext<Contexto>(options => options.UseSqlServer(connectionString));
 
+            services.AddControllers();
+
             services.AddIdentity<Usuario, IdentityRole>()
                 .AddEntityFrameworkStores<UsersContexto>()
                 .AddDefaultTokenProviders();
@@ -61,7 +63,9 @@ namespace ControleFinanceiro.WebAPI
 
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;                
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 
             }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -80,7 +84,6 @@ namespace ControleFinanceiro.WebAPI
             services.AddScoped<IGanhosDAL, GanhosDAL>();
 
             services.AddSingleton<IGravadorLog, GravadorLog>(a => new GravadorLog(pathLog, aplicacao));
-            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

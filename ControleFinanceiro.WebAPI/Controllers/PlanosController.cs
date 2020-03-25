@@ -12,7 +12,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]    
     public class PlanosController : ControllerBase
     {
         private readonly IPlanosDAL planosDAL;
