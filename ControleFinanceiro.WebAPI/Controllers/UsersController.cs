@@ -71,7 +71,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.UniqueName, model.UserName),
-                //new Claim("meuValor", "oque voce quiser"),
+                new Claim("UserName", model.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:key"]));

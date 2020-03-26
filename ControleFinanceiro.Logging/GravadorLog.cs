@@ -48,13 +48,24 @@ namespace ControleFinanceiro.Logging
             sw.WriteLine(ValidaArquivoVazio(newPath) + mensagem);
             sw.Flush();
         }
+        public void GravarLogErro(Exception ex, string mensagem)
+        {
+            LogErro logErro = new LogErro(ex);
 
+            GeraJsonParaLog(logErro);
+        }
         public void GravarLogErro(Exception ex)
+        {
+            LogErro logErro = new LogErro(ex);
+
+            GeraJsonParaLog(logErro);
+        }
+        private void GeraJsonParaLog(LogErro log)
         {
             string newPath = geraCaminhoCompleto("LogErro");
 
-            LogErro logErro = new LogErro(ex);
-            string logTexto = JsonConvert.SerializeObject(logErro, Formatting.Indented);
+            
+            string logTexto = JsonConvert.SerializeObject(log, Formatting.Indented);
 
             GravarArquivo(logTexto, newPath);
         }
