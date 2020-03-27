@@ -19,7 +19,7 @@ namespace ControleFinanceiro.Models
         public TipoMovi Tipo { get; set; }
         [Required]
         [DataMember]
-        public int? CicloId { get; set; }
+        public int CicloId { get; set; }
         public Ciclo Ciclo { get; set; }
 
     }
