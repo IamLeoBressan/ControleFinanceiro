@@ -17,19 +17,22 @@ namespace ControleFinanceiro.WebAPI.Controllers
     public class CiclosController : ControllerBase
     {
         private readonly ICiclosDAL ciclosDAL;
+        private readonly IPlanosDAL planosDAL;
         private readonly IGravadorLog gravadorLog;
-        public CiclosController(ICiclosDAL ciclosDAL, IGravadorLog gravadorLog)
+        public CiclosController(ICiclosDAL ciclosDAL, IPlanosDAL planosDAL, IGravadorLog gravadorLog)
         {
-            this.gravadorLog = gravadorLog;
             this.ciclosDAL = ciclosDAL;
+            this.planosDAL = planosDAL;
+            this.gravadorLog = gravadorLog;
         }
 
         [HttpGet]
         public async Task<IActionResult> BuscarTodos()
         {
+            var usuario = User.Identity.Name;
             try
             {
-                IList<Ciclo> ciclos = await ciclosDAL.GetALL();
+                IList<Ciclo> ciclos = await ciclosDAL.BuscarCiclosUsuario(usuario);
 
                 return Ok(ciclos);
             }
@@ -42,29 +45,47 @@ namespace ControleFinanceiro.WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Buscar(int id)
         {
+            var usuario = User.Identity.Name;
             try
             {
+                if (!await ciclosDAL.ValidaUsuario(usuario, id))
+                    throw new KeyNotFoundException("Ciclo não foi encontrado ou você não tem acesso a ele!");
+
                 Ciclo ciclo = await ciclosDAL.Find(id);
 
                 return Ok(ciclo);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                gravadorLog.GravarLogErro(ex, $"Usuário: {usuario} - CicloId: {id}");
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
                 gravadorLog.GravarLogErro(ex);
                 return StatusCode(500);
-            }
+            }            
         }
         [HttpPost]
         public async Task<IActionResult> Criar(Ciclo ciclo)
         {
+            var usuario = User.Identity.Name;
             try
             {
+                if (!await planosDAL.ValidaUsuario(usuario, ciclo.PlanoId))
+                    throw new KeyNotFoundException("Plano não foi encontrado ou você não tem acesso a ele!");
+
                 await ciclosDAL.Create(ciclo);
 
                 if (Uri.TryCreate("/ciclos/" + ciclo.Id, UriKind.Relative, out Uri result))
                     return Created(result, ciclo);
 
                 return Ok(ciclo);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                gravadorLog.GravarLogErro(ex, $"Usuário: {usuario} - PlanoId: {ciclo.PlanoId}");
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -75,11 +96,20 @@ namespace ControleFinanceiro.WebAPI.Controllers
         [HttpPut]
         public async Task<IActionResult> Atualizar(Ciclo ciclo)
         {
+            var usuario = User.Identity.Name;
             try
             {
+                if (!await ciclosDAL.ValidaUsuario(usuario, (int)ciclo.Id))
+                    throw new KeyNotFoundException("Ciclo não foi encontrado ou você não tem acesso a ele!");
+
                 await ciclosDAL.Update(ciclo);
 
                 return Ok(ciclo);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                gravadorLog.GravarLogErro(ex, $"Usuário: {usuario} - CicloId: {ciclo.PlanoId}");
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -90,11 +120,20 @@ namespace ControleFinanceiro.WebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Deletar(int id)
         {
+            var usuario = User.Identity.Name;
             try
             {
+                if (!await ciclosDAL.ValidaUsuario(usuario, (int)id))
+                    throw new KeyNotFoundException("Ciclo não foi encontrado ou você não tem acesso a ele!");
+
                 await ciclosDAL.Delete(id);
 
                 return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                gravadorLog.GravarLogErro(ex, $"Usuário: {usuario} - CicloId: {id}");
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {

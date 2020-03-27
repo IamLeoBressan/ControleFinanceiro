@@ -14,7 +14,6 @@ namespace ControleFinanceiro.Models
         [DataMember]
         [Required]
         public string Titulo { get; set; }
-        [DataMember]
         public DateTime DataCriacao { get; private set; }
         [DataMember]
         [Required]

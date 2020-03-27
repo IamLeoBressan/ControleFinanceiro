@@ -27,11 +27,10 @@ namespace ControleFinanceiro.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> BuscarTodos()
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            string usuario = identity.FindFirst("UserName").Value;
-
             try
             {
+                var usuario = User.Identity.Name;
+
                 IList<Plano> planos = await planosDAL.BuscarPlanosUsuario(usuario);
                 return Ok(planos);
             }
@@ -44,9 +43,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Buscar(int id)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            string usuario = identity.FindFirst("UserName").Value;
-
+            var usuario = User.Identity.Name;
             try
             {
                 Plano plano = await planosDAL.Find(id);
@@ -70,9 +67,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Criar(Plano plano)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            string usuario = identity.FindFirst("UserName").Value;
-
+            var usuario = User.Identity.Name;
             try
             {
                 plano.Usuario = usuario;
@@ -92,9 +87,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
         [HttpPut]
         public async Task<IActionResult> Atualizar(Plano plano)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            string usuario = identity.FindFirst("UserName").Value;
-
+            var usuario = User.Identity.Name;
             try
             {
                 if(plano.Id == null)
@@ -125,9 +118,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Deletar(int id)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            string usuario = identity.FindFirst("UserName").Value;
-
+            var usuario = User.Identity.Name;
             try
             {                              
                 if (!await planosDAL.ValidaUsuario(usuario, id))
