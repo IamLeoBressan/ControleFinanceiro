@@ -77,6 +77,9 @@ namespace ControleFinanceiro.WebAPI.Controllers
                 if (!await ciclosDAL.ValidaUsuario(usuario, gasto.CicloId))
                     throw new KeyNotFoundException("Ciclo não foi encontrado ou você não tem acesso a ele!");
 
+                if (!gasto.ValidarTipoEData())
+                    throw new KeyNotFoundException("Preencha as data de contabilização conforme o Tipo escolhido!");
+
                 await gastosDAL.Create(gasto);
 
                 if (Uri.TryCreate("/gastos/" + gasto.Id, UriKind.Relative, out Uri result))
@@ -110,6 +113,9 @@ namespace ControleFinanceiro.WebAPI.Controllers
 
                 if (!await gastosDAL.ValidaUsuario(usuario, (int)gasto.Id))
                     throw new KeyNotFoundException("Gasto não foi encontrado ou você não tem acesso a ele!");
+
+                if (!gasto.ValidarTipoEData())
+                    throw new KeyNotFoundException("Preencha as data de contabilização conforme o Tipo escolhido!");
 
                 await gastosDAL.Update(gasto);
 

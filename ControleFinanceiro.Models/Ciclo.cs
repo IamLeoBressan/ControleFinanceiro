@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -30,5 +31,53 @@ namespace ControleFinanceiro.Models
             DataCriacao = DateTime.Now;
         }
 
+        public double LucroMensal(int mes, int ano)
+        {
+            double ganhoMensal = GanhosMensais() + GanhosAnuais(mes) + GanhosUnicos(mes, ano);
+            double gastoMensal = GastosMensais() + GastosAnuais(mes) + GastosUnicos(mes, ano);
+
+            return ganhoMensal - gastoMensal;
+        }
+
+        private double GanhosUnicos(int mes, int ano)
+        {
+            return Ganhos
+                    .Where(g => g.Tipo == TipoMovi.Unica && g.MesContabilizar == mes && g.AnoContabilizar == ano)
+                    .Sum(g => g.Valor);
+        }
+
+        private double GanhosAnuais(int mes)
+        {
+            return Ganhos
+                    .Where(g => g.Tipo == TipoMovi.Anual && g.MesContabilizar == mes)
+                    .Sum(g => g.Valor);
+        }
+
+        private double GanhosMensais()
+        {
+            return Ganhos
+                    .Where(g => g.Tipo == TipoMovi.Mensal)
+                    .Sum(g => g.Valor);
+        }
+
+        private double GastosUnicos(int mes, int ano)
+        {
+            return Gastos
+                    .Where(g => g.Tipo == TipoMovi.Unica && g.MesContabilizar == mes && g.AnoContabilizar == ano)
+                    .Sum(g => g.Valor);
+        }
+
+        private double GastosAnuais(int mes)
+        {
+            return Gastos
+                    .Where(g => g.Tipo == TipoMovi.Anual && g.MesContabilizar == mes)
+                    .Sum(g => g.Valor);
+        }
+        private double GastosMensais()
+        {
+            return Gastos
+                    .Where(g => g.Tipo == TipoMovi.Mensal)
+                    .Sum(g => g.Valor);
+        }
     }
 }
