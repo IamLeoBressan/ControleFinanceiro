@@ -9,14 +9,16 @@ namespace ControleFinanceiro.Logging
         public string Mensagem { get; private set; }
         public string CallStack { get; private set; }
         public string Complementos { get; set; }
+        public int CodigoErro { get; set; }
 
-        public LogErro(Exception ex)
+        public LogErro(Exception ex, int codigoErro)
         {
             Mensagem = ex.Message;
             CallStack = ex.StackTrace;
+            CodigoErro = codigoErro;
         }
 
-        public LogErro(Exception ex, string mensagem): this(ex)
+        public LogErro(Exception ex, int codigoErro, string mensagem): this(ex, codigoErro)
         {
             Complementos = mensagem;
         }

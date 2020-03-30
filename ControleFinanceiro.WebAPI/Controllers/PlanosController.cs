@@ -36,7 +36,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                gravadorLog.GravarLogErro(ex);
+                gravadorLog.GravarLogErro(ex, 500);
                 return StatusCode(500);
             }
         }
@@ -55,12 +55,12 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch(KeyNotFoundException ex)
             {
-                gravadorLog.GravarLogErro(ex, $"Usuário: {usuario} - PlanoId: {id}");
+                gravadorLog.GravarLogErro(ex, 400, $"Usuário: {usuario} - PlanoId: {id}");
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                gravadorLog.GravarLogErro(ex);
+                gravadorLog.GravarLogErro(ex, 500);
                 return StatusCode(500);
             }
         }
@@ -80,7 +80,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                gravadorLog.GravarLogErro(ex);
+                gravadorLog.GravarLogErro(ex, 500);
                 return StatusCode(500);
             }
         }
@@ -106,12 +106,12 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                gravadorLog.GravarLogErro(ex, $"Usuário: {usuario} - PlanoId: {plano.Id}");
+                gravadorLog.GravarLogErro(ex, 400, $"Usuário: {usuario} - PlanoId: {plano.Id}");
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                gravadorLog.GravarLogErro(ex);
+                gravadorLog.GravarLogErro(ex, 500);
                 return StatusCode(500);
             }
         }
@@ -130,12 +130,12 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                gravadorLog.GravarLogErro(ex, $"Usuário: {usuario} - PlanoId: {id}");
+                gravadorLog.GravarLogErro(ex, 400, $"Usuário: {usuario} - PlanoId: {id}");
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                gravadorLog.GravarLogErro(ex);
+                gravadorLog.GravarLogErro(ex, 500);
                 return StatusCode(500);
             }
         }

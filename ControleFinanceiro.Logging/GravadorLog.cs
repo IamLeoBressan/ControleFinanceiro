@@ -48,15 +48,15 @@ namespace ControleFinanceiro.Logging
             sw.WriteLine(ValidaArquivoVazio(newPath) + mensagem);
             sw.Flush();
         }
-        public void GravarLogErro(Exception ex, string mensagem)
+        public void GravarLogErro(Exception ex, int codigoErro, string mensagem)
         {
-            LogErro logErro = new LogErro(ex);
+            LogErro logErro = new LogErro(ex, codigoErro, mensagem);
 
             GeraJsonParaLog(logErro);
         }
-        public void GravarLogErro(Exception ex)
+        public void GravarLogErro(Exception ex, int codigoErro)
         {
-            LogErro logErro = new LogErro(ex);
+            LogErro logErro = new LogErro(ex, codigoErro);
 
             GeraJsonParaLog(logErro);
         }

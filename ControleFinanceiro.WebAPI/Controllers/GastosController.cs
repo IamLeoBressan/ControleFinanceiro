@@ -38,7 +38,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                gravadorLog.GravarLogErro(ex);
+                gravadorLog.GravarLogErro(ex, 500);
                 return StatusCode(500);
             }
         }
@@ -58,12 +58,12 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                gravadorLog.GravarLogErro(ex, $"Usuário: {usuario} - GastoId: {id}");
+                gravadorLog.GravarLogErro(ex, 400, $"Usuário: {usuario} - GastoId: {id}");
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                gravadorLog.GravarLogErro(ex);
+                gravadorLog.GravarLogErro(ex, 500);
                 return StatusCode(500);
             }
         }
@@ -87,12 +87,12 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                gravadorLog.GravarLogErro(ex, $"Usuário: {usuario} - CicloId: {gasto.CicloId}");
+                gravadorLog.GravarLogErro(ex, 400, $"Usuário: {usuario} - CicloId: {gasto.CicloId}");
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                gravadorLog.GravarLogErro(ex);
+                gravadorLog.GravarLogErro(ex, 500);
                 return StatusCode(500);
             }
         }
@@ -117,12 +117,12 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                gravadorLog.GravarLogErro(ex, $"Usuário: {usuario} - GastoId: {gasto.Id}");
+                gravadorLog.GravarLogErro(ex, 400, $"Usuário: {usuario} - GastoId: {gasto.Id}");
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                gravadorLog.GravarLogErro(ex);
+                gravadorLog.GravarLogErro(ex, 500);
                 return StatusCode(500);
             }
         }
@@ -142,12 +142,12 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                gravadorLog.GravarLogErro(ex, $"Usuário: {usuario} - GastoId: {id}");
+                gravadorLog.GravarLogErro(ex, 400, $"Usuário: {usuario} - GastoId: {id}");
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                gravadorLog.GravarLogErro(ex);
+                gravadorLog.GravarLogErro(ex, 500);
                 return StatusCode(500);
             }
         }

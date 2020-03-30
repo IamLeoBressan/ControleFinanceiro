@@ -38,7 +38,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                gravadorLog.GravarLogErro(ex);
+                gravadorLog.GravarLogErro(ex, 500);
                 return StatusCode(500);
             }
         }
@@ -57,12 +57,12 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                gravadorLog.GravarLogErro(ex, $"Usuário: {usuario} - CicloId: {id}");
+                gravadorLog.GravarLogErro(ex, 400, $"Usuário: {usuario} - CicloId: {id}");
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                gravadorLog.GravarLogErro(ex);
+                gravadorLog.GravarLogErro(ex, 500);
                 return StatusCode(500);
             }            
         }
@@ -72,11 +72,6 @@ namespace ControleFinanceiro.WebAPI.Controllers
             var usuario = User.Identity.Name;
             try
             {
-                if (ciclo.Id == null)
-                    throw new KeyNotFoundException("Id obrigatorio para atualização!");
-
-                int id = (int)ciclo.Id;
-
                 if (!await planosDAL.ValidaUsuario(usuario, ciclo.PlanoId))
                     throw new KeyNotFoundException("Plano não foi encontrado ou você não tem acesso a ele!");
 
@@ -89,12 +84,12 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                gravadorLog.GravarLogErro(ex, $"Usuário: {usuario} - PlanoId: {ciclo.PlanoId}");
+                gravadorLog.GravarLogErro(ex, 400, $"Usuário: {usuario} - PlanoId: {ciclo.PlanoId}");
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                gravadorLog.GravarLogErro(ex);
+                gravadorLog.GravarLogErro(ex, 500);
                 return StatusCode(500);
             }
         }
@@ -103,7 +98,12 @@ namespace ControleFinanceiro.WebAPI.Controllers
         {
             var usuario = User.Identity.Name;
             try
-            {
+            {               
+                if (ciclo.Id == null)
+                    throw new KeyNotFoundException("Id obrigatorio para atualização!");
+
+                int id = (int)ciclo.Id;
+
                 if (!await ciclosDAL.ValidaUsuario(usuario, (int)ciclo.Id))
                     throw new KeyNotFoundException("Ciclo não foi encontrado ou você não tem acesso a ele!");
 
@@ -113,12 +113,12 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                gravadorLog.GravarLogErro(ex, $"Usuário: {usuario} - CicloId: {ciclo.PlanoId}");
+                gravadorLog.GravarLogErro(ex, 400, $"Usuário: {usuario} - CicloId: {ciclo.PlanoId}");
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                gravadorLog.GravarLogErro(ex);
+                gravadorLog.GravarLogErro(ex, 500);
                 return StatusCode(500);
             }
         }
@@ -137,12 +137,12 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                gravadorLog.GravarLogErro(ex, $"Usuário: {usuario} - CicloId: {id}");
+                gravadorLog.GravarLogErro(ex, 400, $"Usuário: {usuario} - CicloId: {id}");
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                gravadorLog.GravarLogErro(ex);
+                gravadorLog.GravarLogErro(ex, 500);
                 return StatusCode(500);
             }
         }
