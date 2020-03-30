@@ -72,6 +72,11 @@ namespace ControleFinanceiro.WebAPI.Controllers
             var usuario = User.Identity.Name;
             try
             {
+                if (ciclo.Id == null)
+                    throw new KeyNotFoundException("Id obrigatorio para atualização!");
+
+                int id = (int)ciclo.Id;
+
                 if (!await planosDAL.ValidaUsuario(usuario, ciclo.PlanoId))
                     throw new KeyNotFoundException("Plano não foi encontrado ou você não tem acesso a ele!");
 

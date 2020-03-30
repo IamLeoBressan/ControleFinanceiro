@@ -103,6 +103,11 @@ namespace ControleFinanceiro.WebAPI.Controllers
             var usuario = User.Identity.Name;
             try
             {
+                if (gasto.Id == null)
+                    throw new KeyNotFoundException("Id obrigatorio para atualização!");
+
+                int id = (int)gasto.Id;
+
                 if (!await gastosDAL.ValidaUsuario(usuario, (int)gasto.Id))
                     throw new KeyNotFoundException("Gasto não foi encontrado ou você não tem acesso a ele!");
 

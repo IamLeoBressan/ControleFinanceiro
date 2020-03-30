@@ -100,6 +100,11 @@ namespace ControleFinanceiro.WebAPI.Controllers
             var usuario = User.Identity.Name;
             try
             {
+                if (ganho.Id == null)
+                    throw new KeyNotFoundException("Id obrigatorio para atualização!");
+
+                int id = (int)ganho.Id;
+
                 if (!await ganhosDAL.ValidaUsuario(usuario, (int)ganho.Id))
                     throw new KeyNotFoundException("Ganho não foi encontrado ou você não tem acesso a ele!");
 

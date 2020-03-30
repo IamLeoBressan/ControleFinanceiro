@@ -96,7 +96,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
                 int id = (int)plano.Id;
 
                 if (!await planosDAL.ValidaUsuario(usuario, id))
-                    throw new KeyNotFoundException("Plano não encontrado");
+                    throw new KeyNotFoundException("Plano não foi encontrado ou você não tem acesso a ele!");
 
                 plano.Usuario = usuario;
 
