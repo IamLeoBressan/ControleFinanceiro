@@ -9,13 +9,13 @@ namespace ControleFinanceiro
     {
 
         [Theory]
-        [InlineData(3, 2019, 1800)] // Mensal
-        [InlineData(11, 2019, 2800)] // Anual
-        [InlineData(1, 2019, 700)] // Anual
-        [InlineData(1, 2020, 1000)] // Unico
-        [InlineData(2, 2020, 1400)] // Unico
+        [InlineData(3, 2019, 3100)] // Mensal
+        [InlineData(11, 2019, 4100)] // Anual
+        [InlineData(1, 2019, 2000)] // Anual
+        [InlineData(1, 2020, 2300)] // Unico
+        [InlineData(2, 2020, 2700)] // Unico
 
-        public void TesteGanhoMensal(int mes, int ano, int esperado)
+        public void TesteRendimentoMensal(int mes, int ano, int esperado)
         {
             Ciclo ciclo = new Ciclo()
             {
@@ -84,9 +84,11 @@ namespace ControleFinanceiro
                 }
             };
 
-            double valorMes = ciclo.LucroMensal(mes, ano);
+            double valorBase = 1000.0;
 
-            Assert.Equal(esperado, valorMes);
+            var resumo = ciclo.RendimentoMensal(valorBase, mes, ano);
+
+            Assert.Equal(esperado, resumo.ValorTotal);
         }
     }
 }

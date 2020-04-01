@@ -11,6 +11,9 @@ namespace ControleFinanceiro.Models{
         [Required]
         public string Titulo { get; set; }
         public List<Ciclo> Ciclos { get; set; }
+        [Required]
+        [DataMember]
+        public double ValorBase { get; set; }
         [DataMember]
         public string Usuario { get; set; }
     }

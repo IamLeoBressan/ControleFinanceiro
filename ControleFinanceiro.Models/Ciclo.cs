@@ -31,12 +31,31 @@ namespace ControleFinanceiro.Models
             DataCriacao = DateTime.Now;
         }
 
-        public double LucroMensal(int mes, int ano)
+        public ResumoFinanceiro RendimentoMensal(double valorBase, int mes, int ano)
         {
-            double ganhoMensal = GanhosMensais() + GanhosAnuais(mes) + GanhosUnicos(mes, ano);
-            double gastoMensal = GastosMensais() + GastosAnuais(mes) + GastosUnicos(mes, ano);
+            ResumoFinanceiro resumoFinanceiro = new ResumoFinanceiro();
 
-            return ganhoMensal - gastoMensal;
+            resumoFinanceiro.Mes = $"{ano}-{mes.ToString().PadLeft(2, '0')}";
+            resumoFinanceiro.GastosMes = GastosMes(mes, ano);
+            resumoFinanceiro.RedimentoSalario = GanhosMes(mes, ano);
+            resumoFinanceiro.RendimentoJuros = CalculaGanhoJuros(valorBase);
+            resumoFinanceiro.ValorTotal = valorBase + resumoFinanceiro.LucroMes();
+
+            return resumoFinanceiro;
+        }
+        private double CalculaGanhoJuros(double valorBase)
+        {
+            return valorBase * this.JurosMensal;
+        }
+
+        private double GanhosMes(int mes, int ano)
+        {
+            return GanhosMensais() + GanhosAnuais(mes) + GanhosUnicos(mes, ano);
+        }
+
+        private double GastosMes(int mes, int ano)
+        {
+            return GastosMensais() + GastosAnuais(mes) + GastosUnicos(mes, ano);
         }
 
         private double GanhosUnicos(int mes, int ano)
