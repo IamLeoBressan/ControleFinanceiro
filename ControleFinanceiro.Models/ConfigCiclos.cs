@@ -1,23 +1,25 @@
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace ControleFinanceiro.Models
 {
     [DataContract]
-    public class Plano
+    public class ConfigCiclos
     {
         [DataMember]
         public int? Id { get; set; }
         [DataMember]
         [Required]
-        public string Titulo { get; set; }
-        public List<Ciclo> Ciclos { get; set; }
+        public int CicloId { get; set; }
         [Required]
         [DataMember]
-        public double ValorBase { get; set; }
+        public string MesAno { get; set; }
+        [Required]
         [DataMember]
-        public string Usuario { get; set; }
-        public List<ConfigCiclos> ConfigCiclos { get; set; }
+        public int PlanoId { get; set; }
+        public Plano Plano { get; set; }
     }
 }

@@ -32,7 +32,7 @@ namespace ControleFinanceiro.DAL.Base
 
         public async Task Update(TEntity entity)
         {
-            contexto.Update<TEntity>(entity);
+            contexto.Update(entity);
             await contexto.SaveChangesAsync();
         }
 
