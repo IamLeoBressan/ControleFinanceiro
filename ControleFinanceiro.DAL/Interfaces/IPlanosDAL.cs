@@ -8,6 +8,8 @@ namespace ControleFinanceiro.DAL.Interfaces
     {
         Task<IList<Plano>> BuscarPlanosUsuario(string usuario);
 
+        Task<Plano> BuscarPlanoCompleto(int planoId);
+
         Task<bool> ValidaUsuario(string usuario, int planoId);
     }
 }

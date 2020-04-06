@@ -1,4 +1,5 @@
-﻿using ControleFinanceiro.DAL.Interfaces;
+﻿using ControleFinanceiro.DAL.Base;
+using ControleFinanceiro.DAL.Interfaces;
 using ControleFinanceiro.Logging;
 using ControleFinanceiro.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,7 +20,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
         private readonly IPlanosDAL planosDAL;
         private readonly IGravadorLog gravadorLog;
         public PlanosController(IPlanosDAL planosDAL, IGravadorLog gravadorLog)
-        {
+        {            
             this.planosDAL = planosDAL;
             this.gravadorLog = gravadorLog;
         }
@@ -53,7 +54,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
 
                 return Ok(plano);
             }
-            catch(KeyNotFoundException ex)
+            catch (KeyNotFoundException ex)
             {
                 gravadorLog.GravarLogErro(ex, 400, $"Usuário: {usuario} - PlanoId: {id}");
                 return BadRequest(ex.Message);
@@ -90,7 +91,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             var usuario = User.Identity.Name;
             try
             {
-                if(plano.Id == null)
+                if (plano.Id == null)
                     throw new KeyNotFoundException("Id obrigatorio para atualização!");
 
                 int id = (int)plano.Id;
@@ -120,13 +121,40 @@ namespace ControleFinanceiro.WebAPI.Controllers
         {
             var usuario = User.Identity.Name;
             try
-            {                              
+            {
                 if (!await planosDAL.ValidaUsuario(usuario, id))
                     throw new KeyNotFoundException("Plano não encontrado");
 
                 await planosDAL.Delete(id);
 
                 return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                gravadorLog.GravarLogErro(ex, 400, $"Usuário: {usuario} - PlanoId: {id}");
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                gravadorLog.GravarLogErro(ex, 500);
+                return StatusCode(500);
+            }
+        }
+
+        [HttpGet("{id}/rendimentos/{meses}")]
+        public async Task<IActionResult> GerarRendimentos(int id, int meses)
+        {
+            var usuario = User.Identity.Name;
+            try
+            {
+                Plano plano = await planosDAL.BuscarPlanoCompleto(id);
+
+                if (plano == null || plano.Usuario != usuario)
+                    throw new KeyNotFoundException("Plano não encontrado");
+
+                List<ResumoFinanceiro> rendimentos = plano.PrevisaoRendimentos(meses);
+
+                return Ok(rendimentos);
             }
             catch (KeyNotFoundException ex)
             {

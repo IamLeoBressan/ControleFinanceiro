@@ -14,9 +14,12 @@ namespace ControleFinanceiro.Models
         [DataMember]
         [Required]
         public int CicloId { get; set; }
+
+        public Ciclo Ciclo { get; set; }
+
         [Required]
         [DataMember]
-        public string MesAno { get; set; }
+        public string AnoMes { get; set; }
         [Required]
         [DataMember]
         public int PlanoId { get; set; }

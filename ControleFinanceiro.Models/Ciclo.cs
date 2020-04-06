@@ -25,21 +25,22 @@ namespace ControleFinanceiro.Models
         public Plano Plano { get; set; }
         public List<Ganho> Ganhos { get; set; }
         public List<Gasto> Gastos { get; set; }
+        public List<ConfigCiclos> ConfigsCiclos { get; set; }
 
         public Ciclo()
         {
             DataCriacao = DateTime.Now;
         }
 
-        public ResumoFinanceiro RendimentoMensal(double valorBase, int mes, int ano)
+        public ResumoFinanceiro RendimentoMensal(double valorBase, int ano, int mes)
         {
             ResumoFinanceiro resumoFinanceiro = new ResumoFinanceiro();
 
-            resumoFinanceiro.Mes = $"{ano}-{mes.ToString().PadLeft(2, '0')}";
+            resumoFinanceiro.AnoMes = $"{ano}-{mes.ToString().PadLeft(2, '0')}";
             resumoFinanceiro.GastosMes = GastosMes(mes, ano);
-            resumoFinanceiro.RedimentoSalario = GanhosMes(mes, ano);
+            resumoFinanceiro.RendimentoSalario = GanhosMes(mes, ano);
             resumoFinanceiro.RendimentoJuros = CalculaGanhoJuros(valorBase);
-            resumoFinanceiro.ValorTotal = valorBase + resumoFinanceiro.LucroMes();
+            resumoFinanceiro.ValorTotal = valorBase + resumoFinanceiro.Lucro;
 
             return resumoFinanceiro;
         }
@@ -50,6 +51,10 @@ namespace ControleFinanceiro.Models
 
         private double GanhosMes(int mes, int ano)
         {
+            double ganhosMensais = GanhosMensais();
+            double ganhosAnuais = GanhosAnuais(mes);
+            double ganhosUnicos = GanhosUnicos(mes, ano);
+
             return GanhosMensais() + GanhosAnuais(mes) + GanhosUnicos(mes, ano);
         }
 

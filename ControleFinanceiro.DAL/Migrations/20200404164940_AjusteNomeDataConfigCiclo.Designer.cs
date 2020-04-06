@@ -4,14 +4,16 @@ using ControleFinanceiro.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ControleFinanceiro.DAL.Migrations
 {
     [DbContext(typeof(Contexto))]
-    partial class ContextoModelSnapshot : ModelSnapshot
+    [Migration("20200404164940_AjusteNomeDataConfigCiclo")]
+    partial class AjusteNomeDataConfigCiclo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,8 +66,6 @@ namespace ControleFinanceiro.DAL.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CicloId");
 
                     b.HasIndex("PlanoId");
 
@@ -171,16 +171,10 @@ namespace ControleFinanceiro.DAL.Migrations
 
             modelBuilder.Entity("ControleFinanceiro.Models.ConfigCiclos", b =>
                 {
-                    b.HasOne("ControleFinanceiro.Models.Ciclo", "Ciclo")
-                        .WithMany("ConfigsCiclos")
-                        .HasForeignKey("CicloId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("ControleFinanceiro.Models.Plano", "Plano")
                         .WithMany("ConfigCiclos")
                         .HasForeignKey("PlanoId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

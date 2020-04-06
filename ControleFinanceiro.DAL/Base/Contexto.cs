@@ -17,6 +17,16 @@ namespace ControleFinanceiro.DAL{
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ConfigCiclos>()
+                .HasOne(c => c.Plano)
+                .WithMany(p => p.ConfigCiclos)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ConfigCiclos>()
+                .HasOne(c => c.Ciclo)
+                .WithMany(p => p.ConfigsCiclos)
+                .OnDelete(DeleteBehavior.Restrict);
+
             base.OnModelCreating(modelBuilder);
         }
     }

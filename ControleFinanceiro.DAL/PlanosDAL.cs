@@ -15,7 +15,17 @@ namespace ControleFinanceiro.DAL
         private readonly Contexto contexto;
         public PlanosDAL(Contexto contexto) : base(contexto)
         {
+            //InitializeDB.Initialize(contexto);
             this.contexto = contexto;
+        }
+        public async Task<Plano> BuscarPlanoCompleto(int planoId)
+        {
+            return await contexto.Planos
+                            .Include(p => p.Ciclos).ThenInclude(c => c.Ganhos)
+                            .Include(p => p.Ciclos).ThenInclude(c => c.Gastos)
+                            .Include(p => p.ConfigCiclos)
+                            .FirstOrDefaultAsync(p => p.Id == planoId);
+                         
         }
 
         public async Task<IList<Plano>> BuscarPlanosUsuario(string usuario)
