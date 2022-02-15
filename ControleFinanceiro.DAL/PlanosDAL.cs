@@ -31,8 +31,11 @@ namespace ControleFinanceiro.DAL
         public async Task<IList<Plano>> BuscarPlanosUsuario(string usuario)
         {
             return await contexto.Planos
-                            .Where(p => p.Usuario == usuario)
-                            .ToListAsync();
+                        .Where(p => p.Usuario == usuario)
+                        .Include(p => p.Ciclos).ThenInclude(c => c.Ganhos)
+                        .Include(p => p.Ciclos).ThenInclude(c => c.Gastos)
+                        .Include(p => p.ConfigCiclos)
+                        .ToListAsync();
         }
 
         public async Task<bool> ValidaUsuario(string usuario, int planoId)

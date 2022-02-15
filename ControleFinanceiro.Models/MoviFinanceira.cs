@@ -26,18 +26,18 @@ namespace ControleFinanceiro.Models
 
         public bool ValidarTipoEData()
         {
-            if (Tipo == TipoMovi.Anual && ValidaMes(MesContabilizar))
-                return true;
+            if (Tipo == TipoMovi.Anual && !ValidaMes(MesContabilizar))
+                return false;
 
-            if (Tipo == TipoMovi.Unica && ValidaMes(MesContabilizar) && ValidaAno(AnoContabilizar))
-                return true;
+            if (Tipo == TipoMovi.Unica && (!ValidaMes(MesContabilizar) || !ValidaAno(AnoContabilizar)))
+                return false;
 
-            return false;
+            return true;
         }
 
         private bool ValidaMes(int mes)
         {
-            if (mes > 0 || mes <= 12)
+            if (mes > 0 && mes <= 12)
                 return true;
 
             return false;

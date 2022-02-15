@@ -5,6 +5,7 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using ControleFinanceiro.DAL;
+using ControleFinanceiro.DAL.Base;
 using ControleFinanceiro.DAL.Interfaces;
 using ControleFinanceiro.Logging;
 using ControleFinanceiro.Seguranca;
@@ -43,8 +44,11 @@ namespace ControleFinanceiro.WebAPI
 
             services.AddDbContext<UsersContexto>(options => options.UseSqlServer(connectionStringSeg));
             services.AddDbContext<Contexto>(options => options.UseSqlServer(connectionString));
+            services.AddScoped<IInitializeDB, InitializeDB>();
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
             services.AddIdentity<Usuario, IdentityRole>()
                 .AddEntityFrameworkStores<UsersContexto>()
@@ -96,9 +100,17 @@ namespace ControleFinanceiro.WebAPI
 
             //app.UseHttpsRedirection();
 
+            app.UseCors(options => options
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                //.AllowCredentials()
+            );
+
             app.UseRouting();
 
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

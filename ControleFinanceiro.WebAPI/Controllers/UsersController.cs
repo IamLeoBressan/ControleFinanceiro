@@ -31,11 +31,14 @@ namespace ControleFinanceiro.WebAPI.Controllers
             this.configuration = configuration;
         }
 
-        [HttpPost]        
+        [AllowAnonymous]
+        [HttpPost]
         public async Task<IActionResult> CriarUsuario(RegisterModel model)
         {
             var user = new Usuario
             {
+                Nome = model.Nome,
+                Sobrenome = model.Sobrenome,
                 UserName = model.UserName,
                 Email = model.Email
             };
@@ -45,7 +48,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             if (result.Succeeded)
                 return Ok(BuildToken(model.ToLoginModel()));
             else
-                return BadRequest("Usuário ou senha inválidos");
+                return BadRequest(result.Errors);
         }
 
         [HttpPost("Login")]
@@ -61,7 +64,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "login inválido.");
+                ModelState.AddModelError("mensagens", "Usuário ou senha incorreto.");
                 return BadRequest(ModelState);
             }
         }
@@ -76,7 +79,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            
+
             var expiration = DateTime.UtcNow.AddHours(1);
             JwtSecurityToken token = new JwtSecurityToken(
                issuer: null,

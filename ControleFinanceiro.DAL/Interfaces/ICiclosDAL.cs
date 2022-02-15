@@ -10,6 +10,6 @@ namespace ControleFinanceiro.DAL.Interfaces
     {
         Task<bool> ValidaUsuario(string usuario, int cicloId);
         Task<IList<Ciclo>> BuscarCiclosUsuario(string usuario);
-
+        Task<IList<Ciclo>> BuscarCiclosPorPlano(int planoId);
     }
 }

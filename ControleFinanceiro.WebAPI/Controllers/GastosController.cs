@@ -47,6 +47,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
         public async Task<IActionResult> Buscar(int id)
         {
             var usuario = User.Identity.Name;
+
             try
             {
                 if (!await gastosDAL.ValidaUsuario(usuario, id))

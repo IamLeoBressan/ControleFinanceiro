@@ -7,19 +7,25 @@ using System.Text;
 
 namespace ControleFinanceiro.DAL.Base
 {
-    public static class InitializeDB
+    public class InitializeDB : IInitializeDB
     {
-        public static void Initialize(Contexto contexto)
+        private readonly Contexto _contexto;
+        public InitializeDB(Contexto contexto)
+        {
+            _contexto = contexto;
+        }
+
+        public void Initialize()
         {
             Plano plano = GeradorPlanoCompleto();
 
-            contexto.Planos.Add(plano);
+            _contexto.Planos.Add(plano);
 
-            contexto.SaveChanges();
+            _contexto.SaveChanges();
         }
 
 
-        private static Plano GeradorPlanoCompleto()
+        private Plano GeradorPlanoCompleto()
         {
             Plano plano = new Plano();
 
@@ -53,7 +59,7 @@ namespace ControleFinanceiro.DAL.Base
             return plano;
         }
 
-        private static Plano GeradorPlanoSimples()
+        private Plano GeradorPlanoSimples()
         {
             Plano plano = new Plano();
 
@@ -86,7 +92,7 @@ namespace ControleFinanceiro.DAL.Base
             return plano;
         }
 
-        private static Ciclo GerarCicloCompleto()
+        private Ciclo GerarCicloCompleto()
         {
             Ciclo ciclo = new Ciclo()
             {
@@ -158,7 +164,7 @@ namespace ControleFinanceiro.DAL.Base
             return ciclo;
         }
 
-        private static Ciclo GerarCicloSimples()
+        private Ciclo GerarCicloSimples()
         {
             Ciclo ciclo = new Ciclo()
             {
@@ -192,7 +198,7 @@ namespace ControleFinanceiro.DAL.Base
             return ciclo;
         }
 
-        private static Ciclo GerarCicloSimples2()
+        private Ciclo GerarCicloSimples2()
         {
             Ciclo ciclo = new Ciclo()
             {

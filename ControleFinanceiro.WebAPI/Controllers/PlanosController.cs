@@ -19,10 +19,11 @@ namespace ControleFinanceiro.WebAPI.Controllers
     {
         private readonly IPlanosDAL planosDAL;
         private readonly IGravadorLog gravadorLog;
-        public PlanosController(IPlanosDAL planosDAL, IGravadorLog gravadorLog)
-        {            
+        public PlanosController(IPlanosDAL planosDAL, IGravadorLog gravadorLog/*, IInitializeDB initializeDB*/)
+        {
             this.planosDAL = planosDAL;
             this.gravadorLog = gravadorLog;
+            //initializeDB.Initialize();
         }
 
         [HttpGet]
@@ -41,6 +42,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
                 return StatusCode(500);
             }
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Buscar(int id)
         {
@@ -141,13 +143,13 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
         }
 
-        [HttpGet("{id}/rendimentos/{meses}")]
-        public async Task<IActionResult> GerarRendimentos(int id, int meses)
+        [HttpGet("{planoId}/rendimentos/{meses}")]
+        public async Task<IActionResult> GerarRendimentos(int planoId, int meses)
         {
             var usuario = User.Identity.Name;
             try
             {
-                Plano plano = await planosDAL.BuscarPlanoCompleto(id);
+                Plano plano = await planosDAL.BuscarPlanoCompleto(planoId);
 
                 if (plano == null || plano.Usuario != usuario)
                     throw new KeyNotFoundException("Plano não encontrado");
@@ -158,7 +160,7 @@ namespace ControleFinanceiro.WebAPI.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                gravadorLog.GravarLogErro(ex, 400, $"Usuário: {usuario} - PlanoId: {id}");
+                gravadorLog.GravarLogErro(ex, 400, $"Usuário: {usuario} - PlanoId: {planoId}");
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)

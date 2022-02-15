@@ -42,6 +42,32 @@ namespace ControleFinanceiro.WebAPI.Controllers
                 return StatusCode(500);
             }
         }
+
+        [HttpGet("plano/{planoId}")]
+        public async Task<IActionResult> BuscarTodosPorPlano(int planoId)
+        {
+            var usuario = User.Identity.Name;
+            try
+            {
+                if (!await planosDAL.ValidaUsuario(usuario, planoId))
+                    throw new KeyNotFoundException("Plano não foi encontrado ou você não tem acesso a ele!");
+
+                IList<Ciclo> ciclos = await ciclosDAL.BuscarCiclosPorPlano(planoId);
+
+                return Ok(ciclos);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                gravadorLog.GravarLogErro(ex, 400, $"Usuário: {usuario} - PlanoId: {planoId}");
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                gravadorLog.GravarLogErro(ex, 500);
+                return StatusCode(500);
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Buscar(int id)
         {

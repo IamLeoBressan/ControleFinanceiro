@@ -23,6 +23,13 @@ namespace ControleFinanceiro.DAL
                             .ToListAsync();
         }
 
+        public async Task<IList<Ciclo>> BuscarCiclosPorPlano(int planoId)
+        {
+            return await contexto.Ciclos
+                            .Where(p => p.PlanoId == planoId)
+                            .ToListAsync();
+        }
+
         public async Task<bool> ValidaUsuario(string usuario, int cicloId)
         {
             return await contexto.Ciclos

@@ -15,6 +15,7 @@ namespace ControleFinanceiro.Models
         [DataMember]
         [Required]
         public string Titulo { get; set; }
+        [DataMember]
         public List<Ciclo> Ciclos { get; set; }
         [Required]
         [DataMember]
@@ -26,7 +27,7 @@ namespace ControleFinanceiro.Models
         public List<ResumoFinanceiro> PrevisaoRendimentos(int mesesPrevisao)
         {
             if (ConfigCiclos == null || !ConfigCiclos.Any())
-                throw new ArgumentNullException("Configuração dos ciclos está vazia");
+                throw new KeyNotFoundException("Configuração dos ciclos está vazia");
 
             ConfigCiclos ConfigAtual = ConfigCiclos.OrderBy(c => c.AnoMes)
                                             .FirstOrDefault();

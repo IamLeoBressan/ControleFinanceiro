@@ -23,7 +23,9 @@ namespace ControleFinanceiro.Models
         [DataMember]
         public int PlanoId { get; set; }
         public Plano Plano { get; set; }
+        [DataMember]
         public List<Ganho> Ganhos { get; set; }
+        [DataMember]
         public List<Gasto> Gastos { get; set; }
         public List<ConfigCiclos> ConfigsCiclos { get; set; }
 
